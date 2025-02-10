@@ -9,7 +9,7 @@ let itemTarget = '_blank';
 const NavCard = () => {
   return (
     <React.Fragment>
-      <div className="p-20">
+      {/* <div className="p-20">
         <Card className="pro-card">
           <Card.Body className="p-2 text-center">
             <img src={sidebarImages} className="img-radius " alt="User-Profile" />
@@ -24,7 +24,7 @@ const NavCard = () => {
             </a>
           </Card.Body>
         </Card>
-      </div>
+      </div> */}
     </React.Fragment>
   );
 };
