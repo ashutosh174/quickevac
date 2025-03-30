@@ -1,180 +1,95 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import 'WeatherWidget.css';
+import './WeatherWidget.css';
 
-// Government API Endpoints
-const API_ENDPOINTS = {
-  WEATHER_ALERTS: 'https://api.weather.gov/alerts/active?area=ON', // National Weather Service Alerts
-  EARTHQUAKES: 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2024-01-01&endtime=2025-02-09&minmagnitude=4.5&limit=5000', // USGS Earthquakes
-  FEMA_DISASTERS: 'https://www.fema.gov/api/open/v2/DisasterDeclarationsSummaries', // FEMA Disasters
-  CANADA_ALERTS: 'https://api.weather.gc.ca/collections/emergency-alerts/items?f=json&prov=ON' // Canada Weather Alerts
-};
+const client_id = 'ZGdI4XabAuRWp99RwklWP';
+const client_secret = 's9BPkgtBvvPLKSm41h4XG2FbPWLGbcpm6rCG9wsR';
+
+const EARTHQUAKE_API_URL = `https://data.api.xweather.com/earthquakes/closest?p=42.9849,-81.2453&radius=500&limit=20&format=json&from=2020-01-01T00:00:00Z&to=now&client_id=${client_id}&client_secret=${client_secret}`;
+
+const LONDON_ON = [42.9849, -81.2453];
 
 const EmergencyMap = () => {
-  const [alerts, setAlerts] = useState([]);
   const [earthquakes, setEarthquakes] = useState([]);
-  const [disasters, setDisasters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch data from government APIs
   useEffect(() => {
-    const fetchEmergencyData = async () => {
+    const fetchEarthquakeData = async () => {
       try {
-        // 1. National Weather Service Alerts (Canada)
-        const weatherResponse = await fetch(API_ENDPOINTS.CANADA_ALERTS);
-        const weatherData = await weatherResponse.json();
-        
-        // 2. USGS Earthquakes (North America)
-        const quakeResponse = await fetch(API_ENDPOINTS.EARTHQUAKES);
-        const quakeData = await quakeResponse.json();
-        
-        // 3. FEMA Disasters (USA)
-        const femaResponse = await fetch(API_ENDPOINTS.FEMA_DISASTERS);
-        const femaData = await femaResponse.json();
+        const response = await fetch(EARTHQUAKE_API_URL);
+        const data = await response.json();
 
-        // Process data
-        const processedAlerts = processWeatherAlerts(weatherData);
-        const processedQuakes = processEarthquakeData(quakeData);
-        const processedDisasters = processFemaData(femaData);
+        if (!data.success) {
+          throw new Error(data.error?.description || 'Failed to fetch earthquake data');
+        }
 
-        setAlerts(processedAlerts);
-        setEarthquakes(processedQuakes);
-        setDisasters(processedDisasters);
+        setEarthquakes(processEarthquakeData(data.response));
         setLoading(false);
-
       } catch (err) {
-        setError('Failed to load emergency data');
+        setError(err.message);
         setLoading(false);
       }
     };
 
-    fetchEmergencyData();
-    const interval = setInterval(fetchEmergencyData, 300000); // Refresh every 5 minutes
-
-    return () => clearInterval(interval);
+    fetchEarthquakeData();
   }, []);
 
-  // Process NWS Alert Data
-  const processWeatherAlerts = (data) => {
-    return data.features.map(alert => ({
-      type: 'weather',
-      coordinates: [alert.geometry.coordinates[1], alert.geometry.coordinates[0]],
-      title: alert.properties.event,
-      description: alert.properties.headline,
-      severity: alert.properties.severity,
-      effective: new Date(alert.properties.effective),
-      expires: new Date(alert.properties.expires)
-    }));
-  };
-
-  // Process USGS Earthquake Data
   const processEarthquakeData = (data) => {
-    return data.features.map(quake => ({
-      type: 'earthquake',
-      coordinates: [quake.geometry.coordinates[1], quake.geometry.coordinates[0]],
-      magnitude: quake.properties.mag,
-      title: quake.properties.title,
-      time: new Date(quake.properties.time)
+    return data.map(eq => ({
+      coordinates: [eq.loc.lat, eq.loc.long],
+      magnitude: eq.magnitude || 'N/A',
+      depth: eq.depth || 'N/A',
+      location: eq.place?.name || 'Unknown Location',
+      dateTime: new Date(eq.timestamp * 1000).toLocaleString(),
+      severity: getSeverityLevel(eq.magnitude),
     }));
   };
 
-  // Process FEMA Disaster Data
-  const processFemaData = (data) => {
-    return data.DisasterDeclarationsSummaries.map(disaster => ({
-      type: 'disaster',
-      coordinates: [disaster.lat, disaster.lon],
-      title: disaster.disasterName,
-      declarationDate: new Date(disaster.declarationDate),
-      disasterType: disaster.disasterType
-    }));
-  };
-
-  // Custom Emergency Icons
-  const emergencyIcons = {
-    weather: L.icon({
-      iconUrl: '/icons/weather-alert.png',
-      iconSize: [32, 32]
-    }),
-    earthquake: L.icon({
-      iconUrl: '/icons/earthquake.png',
-      iconSize: [32, 32]
-    }),
-    disaster: L.icon({
-      iconUrl: '/icons/disaster.png',
-      iconSize: [32, 32]
-    })
+  const getSeverityLevel = (magnitude) => {
+    if (magnitude <= 3.0) return { color: 'blue', radius: 5 };
+    if (magnitude <= 5.0) return { color: 'green', radius: 3 };
+    if (magnitude <= 6.0) return { color: 'yellow', radius: 6 };
+    if (magnitude <= 7.0) return { color: 'orange', radius: 7 };
+    return { color: 'red', radius: 4 };
   };
 
   return (
     <div className="emergency-map">
       <MapContainer 
-        center={[42.9849, -81.2453]} 
-        zoom={7} 
-        style={{ height: '100vh', width: '100%' }}
+        center={LONDON_ON} 
+        zoom={5}
+        style={{ height: '70vh', width: '100%' }}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          attribution='&copy; OpenStreetMap contributors'
         />
 
-        {/* Weather Alerts */}
-        {alerts.map((alert, index) => (
-          <Marker
-            key={`alert-${index}`}
-            position={alert.coordinates}
-            icon={emergencyIcons.weather}
+        {earthquakes.map((eq, index) => (
+          <CircleMarker
+            key={`earthquake-${index}`}
+            center={eq.coordinates}
+            color={eq.severity.color}
+            radius={eq.severity.radius}
+            fillOpacity={0.6}
           >
             <Popup>
-              <div className="emergency-popup">
-                <h3>⚠️ {alert.title}</h3>
-                <p>{alert.description}</p>
-                <p>Severity: {alert.severity}</p>
-                <p>Effective: {alert.effective.toLocaleString()}</p>
-                <p>Expires: {alert.expires.toLocaleString()}</p>
+              <div className="earthquake-popup">
+                <h3>🌍 Earthquake</h3>
+                <p><strong>Location:</strong> {eq.location}</p>
+                <p><strong>Magnitude:</strong> {eq.magnitude}</p>
+                <p><strong>Depth:</strong> {eq.depth} km</p>
+                <p><strong>Date:</strong> {eq.dateTime}</p>
               </div>
             </Popup>
-          </Marker>
-        ))}
-
-        {/* Earthquakes */}
-        {earthquakes.map((quake, index) => (
-          <Marker
-            key={`quake-${index}`}
-            position={quake.coordinates}
-            icon={emergencyIcons.earthquake}
-          >
-            <Popup>
-              <div className="emergency-popup">
-                <h3>🌍 Earthquake: M{quake.magnitude}</h3>
-                <p>{quake.title}</p>
-                <p>Time: {quake.time.toLocaleString()}</p>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
-
-        {/* FEMA Disasters */}
-        {disasters.map((disaster, index) => (
-          <Marker
-            key={`disaster-${index}`}
-            position={disaster.coordinates}
-            icon={emergencyIcons.disaster}
-          >
-            <Popup>
-              <div className="emergency-popup">
-                <h3>🚨 {disaster.disasterType}</h3>
-                <p>{disaster.title}</p>
-                <p>Declared: {disaster.declarationDate.toLocaleDateString()}</p>
-              </div>
-            </Popup>
-          </Marker>
+          </CircleMarker>
         ))}
       </MapContainer>
 
-      {loading && <div className="loading-overlay">Loading Emergency Data...</div>}
+      {loading && <div className="loading-overlay">Loading Earthquake Data...</div>}
       {error && <div className="error-overlay">{error}</div>}
     </div>
   );

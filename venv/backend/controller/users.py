@@ -60,6 +60,7 @@ def login():
             session['user_id'] = user.id  # Store user ID in the session
             session['is_admin'] = user.is_admin  # Store admin status (if applicable)
             session['is_manager'] = user.is_manager # Store manager status (if applicable)
+            session.permanent = True # Make the session permanent
 
             return jsonify({
                 "message": "Login successful",
