@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client'; // Import the ReactDOM.createRoot API
 import App from './App'; // Import the main App component
 import './index.css'; // Optional: Import global styles if you have them
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Get the root element from the HTML file
 const rootElement = document.getElementById('root');
