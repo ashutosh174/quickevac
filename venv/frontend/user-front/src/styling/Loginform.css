@@ -1,0 +1,25 @@
+.login-form-container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #f9f9f9;
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  .login-form-container h2 {
+    color: #000080;
+    font-weight: 700;
+  }
+  
+  .form-control {
+    font-size: 1rem;
+  }
+  
+  button.btn-primary {
+    background-color: #000080;
+    border: none;
+  }
+  
+  button.btn-primary:hover {
+    background-color: #000060;
+  }
+  
