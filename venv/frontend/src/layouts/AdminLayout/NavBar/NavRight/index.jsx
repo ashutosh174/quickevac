@@ -6,31 +6,28 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import ChatList from './ChatList';
 
 import avatar1 from '../../../../assets/images/user/avatar-1.jpg';
-import avatar2 from '../../../../assets/images/user/avatar-2.jpg';
-import avatar3 from '../../../../assets/images/user/avatar-3.jpg';
-import avatar4 from '../../../../assets/images/user/avatar-4.jpg';
 
 const NavRight = () => {
   const [listOpen, setListOpen] = useState(false);
 
-  const notiData = [
+  const disasterNotifications = [
     {
-      name: 'Joseph William',
-      image: avatar2,
-      details: 'Purchase New Theme and make payment',
-      activity: '30 min'
+      severity: 'High',
+      location: 'London',
+      message: 'Severe earthquake detected',
+      timestamp: '10 min ago'
     },
     {
-      name: 'Sara Soudein',
-      image: avatar3,
-      details: 'currently login',
-      activity: '30 min'
+      severity: 'Moderate',
+      location: 'Toronto',
+      message: 'Flood alert issued',
+      timestamp: '30 min ago'
     },
     {
-      name: 'Suzen',
-      image: avatar4,
-      details: 'Purchase New Theme and make payment',
-      activity: 'yesterday'
+      severity: 'Low',
+      location: 'Hamilton',
+      message: 'Mild storm warning',
+      timestamp: '1 hr ago'
     }
   ];
 
@@ -44,62 +41,31 @@ const NavRight = () => {
             </Dropdown.Toggle>
             <Dropdown.Menu align="end" className="notification notification-scroll">
               <div className="noti-head">
-                <h6 className="d-inline-block m-b-0">Notifications</h6>
+                <h6 className="d-inline-block m-b-0">Disaster Alerts</h6>
                 <div className="float-end">
-                  <Link to="#" className="me-2">
-                    mark as read
-                  </Link>
+                  <Link to="#" className="me-2">mark as read</Link>
                   <Link to="#">clear all</Link>
                 </div>
               </div>
               <PerfectScrollbar>
                 <ListGroup as="ul" bsPrefix=" " variant="flush" className="noti-body">
-                  <ListGroup.Item as="li" bsPrefix=" " className="n-title">
-                    <p className="m-b-0">NEW</p>
-                  </ListGroup.Item>
-                  <ListGroup.Item as="li" bsPrefix=" " className="notification">
-                    <Card
-                      className="d-flex align-items-center shadow-none mb-0 p-0"
-                      style={{ flexDirection: 'row', backgroundColor: 'unset' }}
-                    >
-                      <img className="img-radius" src={avatar1} alt="Generic placeholder" />
-                      <Card.Body className="p-0">
-                        <p>
-                          <strong>John Doe</strong>
-                          <span className="n-time text-muted">
-                            <i className="icon feather icon-clock me-2" />
-                            30 min
-                          </span>
-                        </p>
-                        <p>New ticket Added</p>
-                      </Card.Body>
-                    </Card>
-                  </ListGroup.Item>
-                  <ListGroup.Item as="li" bsPrefix=" " className="n-title">
-                    <p className="m-b-0">EARLIER</p>
-                  </ListGroup.Item>
-                  {notiData.map((data, index) => {
-                    return (
-                      <ListGroup.Item key={index} as="li" bsPrefix=" " className="notification">
-                        <Card
-                          className="d-flex align-items-center shadow-none mb-0 p-0"
-                          style={{ flexDirection: 'row', backgroundColor: 'unset' }}
-                        >
-                          <img className="img-radius" src={data.image} alt="Generic placeholder" />
-                          <Card.Body className="p-0">
-                            <p>
-                              <strong>{data.name}</strong>
-                              <span className="n-time text-muted">
-                                <i className="icon feather icon-clock me-2" />
-                                {data.activity}
-                              </span>
-                            </p>
-                            <p>{data.details}</p>
-                          </Card.Body>
-                        </Card>
-                      </ListGroup.Item>
-                    );
-                  })}
+                  {disasterNotifications.map((alert, index) => (
+                    <ListGroup.Item key={index} as="li" bsPrefix=" " className={`notification severity-${alert.severity.toLowerCase()}`}>
+                      <Card className="d-flex align-items-center shadow-none mb-0 p-0" style={{ flexDirection: 'row', backgroundColor: 'unset' }}>
+                        <img className="img-radius" src={avatar1} alt="icon" />
+                        <Card.Body className="p-0">
+                          <p>
+                            <strong>{alert.location}</strong>
+                            <span className="n-time text-muted">
+                              <i className="icon feather icon-clock me-2" />
+                              {alert.timestamp}
+                            </span>
+                          </p>
+                          <p>{alert.message}</p>
+                        </Card.Body>
+                      </Card>
+                    </ListGroup.Item>
+                  ))}
                 </ListGroup>
               </PerfectScrollbar>
               <div className="noti-footer">
@@ -108,6 +74,7 @@ const NavRight = () => {
             </Dropdown.Menu>
           </Dropdown>
         </ListGroup.Item>
+
         <ListGroup.Item as="li" bsPrefix=" ">
           <Dropdown>
             <Dropdown.Toggle as={Link} variant="link" to="#" className="displayChatbox" onClick={() => setListOpen(true)}>
@@ -115,6 +82,7 @@ const NavRight = () => {
             </Dropdown.Toggle>
           </Dropdown>
         </ListGroup.Item>
+
         <ListGroup.Item as="li" bsPrefix=" ">
           <Dropdown align={'end'} className="drp-user">
             <Dropdown.Toggle as={Link} variant="link" to="#" id="dropdown-basic">

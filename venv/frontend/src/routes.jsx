@@ -62,6 +62,11 @@ const routes = [
       },
       {
         exact: 'true',
+        path: '/role/role_management',
+        element: lazy(() => import('./views/role/role_management.jsx'))
+      },
+      {
+        exact: 'true',
         path: '/basic/button',
         element: lazy(() => import('./views/ui-elements/basic/BasicButton'))
       },
