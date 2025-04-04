@@ -1,0 +1,32 @@
+.custom-navbar-wrapper {
+  width: 100%;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  background: transparent;
+}
+
+.custom-navbar {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 999px;
+  padding: 0.75rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 1400px;
+  border: 1px solid #eee;
+}
+
+.custom-navbar .nav-link {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #000;
+  margin: 0 12px;
+}
+
+.custom-navbar .nav-link:hover {
+  color: #000080;
+}
+
+.logo {
+  height: 40px;
+}

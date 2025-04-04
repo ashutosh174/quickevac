@@ -1,0 +1,36 @@
+.emergency-section {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.section-title {
+  color: #000080;
+  font-weight: bold;
+}
+
+.section-subtitle {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.contact-box {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.contact-box:hover {
+  transform: translateY(-3px);
+}
+
+.contact-box a {
+  color: #000080;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.contact-box a:hover {
+  text-decoration: underline;
+}
