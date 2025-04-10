@@ -19,7 +19,9 @@ const UsersWithRoles = () => {
 
   useEffect(() => {
     fetchUsers();
+    fetchRoles(); // <-- Add this line
   }, []);
+  
 
   const fetchUsers = () => {
     fetch("http://127.0.0.1:5000/api/roles/users_with_roles")
@@ -28,12 +30,13 @@ const UsersWithRoles = () => {
       .catch((err) => console.error("Error fetching users:", err));
   };
 
-  // const fetchRoles = () => {
-  //   fetch("http://127.0.0.1:5000/api/roles")
-  //     .then((res) => res.json())
-  //     .then((data) => setRoles(data.roles || []))
-  //     .catch((err) => console.error("Error fetching roles:", err));
-  // };
+  const fetchRoles = () => {
+    fetch("http://127.0.0.1:5000/api/roles")
+      .then((res) => res.json())
+      .then((data) => setRoles(data.roles || []))
+      .catch((err) => console.error("Error fetching roles:", err));
+  };
+  
 
   const openEditModal = (user) => {
     setSelectedUser(user);
@@ -227,12 +230,15 @@ const UsersWithRoles = () => {
             <Form.Group controlId="roleSelect">
               <Form.Label>Select Role</Form.Label>
               <Form.Select
-                value={selectedRole}
-                onChange={(e) => setSelectedRole(e.target.value)}
+                value={newUser.role_id}
+                onChange={(e) => setNewUser({ ...newUser, role_id: e.target.value })}
               >
                 <option value="">Select a role</option>
-                <option value="Admin">Admin</option>
-                <option value="Manager">Manager</option>
+                {roles.map((role) => (
+                  <option key={role.role_id} value={role.role_id}>
+                    {role.role_name}
+                  </option>
+                ))}
               </Form.Select>
             </Form.Group>
           </Form>
