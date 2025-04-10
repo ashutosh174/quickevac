@@ -107,6 +107,11 @@ const routes = [
       },
       {
         exact: 'true',
+        path: '/alerts/alerts',
+        element: lazy(() => import('./views/alerts/alerts'))
+      },
+      {
+        exact: 'true',
         path: '/charts/nvd3',
         element: lazy(() => import('./views/charts/nvd3-chart'))
       },

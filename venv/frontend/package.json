@@ -11,6 +11,10 @@
     "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^7.0.1",
+    "@mui/material": "^7.0.1",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@react-google-maps/api": "^2.19.3",
     "@tanem/react-nprogress": "^5.0.51",
@@ -26,6 +30,7 @@
     "formik": "^2.4.5",
     "jquery": "^3.7.1",
     "leaflet": "^1.9.4",
+    "mui": "^0.0.1",
     "process": "^0.11.10",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.9",
@@ -61,6 +66,7 @@
     "@babel/eslint-parser": "^7.24.1",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-react": "^7.24.1",
+    "@vitejs/plugin-react-swc": "^3.8.1",
     "env-cmd": "^10.1.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",

@@ -20,7 +20,9 @@ def get_users():
                 "email": user.email,
                 "first_name": user.first_name,
                 "last_name": user.last_name,
-                "phone_no": user.phone_no
+                "phone_no": user.phone_no,
+                "latitude": user.latitude,
+                "longitude": user.longitude
                 
             }
             for user in users
