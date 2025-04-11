@@ -10,7 +10,7 @@ def get_users_with_roles():
     try:
         db = next(get_db())
         query = text("""
-            SELECT users.id, users.first_name, users.last_name, users.username, roles.role_name, users.role_id
+            SELECT users.id, users.first_name, users.last_name,users.phone_no,users.latitude,users.longitude, users.username, roles.role_name, users.role_id
             FROM users 
             LEFT JOIN roles ON users.role_id = roles.role_id
         """)

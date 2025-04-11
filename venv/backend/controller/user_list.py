@@ -20,6 +20,7 @@ def get_users():
                 "email": user.email,
                 "first_name": user.first_name,
                 "last_name": user.last_name,
+                "location": user.location,
                 "phone_no": user.phone_no
                 
             }

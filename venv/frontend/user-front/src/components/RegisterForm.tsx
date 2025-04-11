@@ -1,11 +1,8 @@
 import { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
-interface Props {
-  switchToLogin: () => void;
-}
-
-const RegisterForm = ({ switchToLogin }: Props) => {
+const RegisterForm = () => {
   const [formData, setFormData] = useState({
     fname: '',
     lname: '',
@@ -13,59 +10,96 @@ const RegisterForm = ({ switchToLogin }: Props) => {
     phone: '',
     username: '',
     password: '',
+    location: '',
+    latitude: '',
+    longitude: '',
   });
 
-  const [location, setLocation] = useState('');
-  const [locationStatus, setLocationStatus] = useState('');
+  const [status, setStatus] = useState({ loading: false, error: '', success: '' });
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const requestLocation = () => {
+  const fetchLocation = () => {
     if (!navigator.geolocation) {
-      setLocationStatus('Geolocation is not supported.');
+      setStatus((s) => ({ ...s, error: 'Geolocation not supported by browser.' }));
       return;
     }
 
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
-        setLocationStatus('Fetching location...');
+        setFormData((prev) => ({
+          ...prev,
+          latitude: latitude.toString(),
+          longitude: longitude.toString(),
+        }));
 
         try {
-          const response = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=en`
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
           );
-          const data = await response.json();
+          const data = await res.json();
           const place = data.address || {};
           const locationName = `${place.city || place.town || place.village || ''}, ${place.state || ''}`;
-          setLocation(locationName);
-          setLocationStatus('Location captured.');
-        } catch (error) {
-          setLocationStatus('Could not get location name.');
+          setFormData((prev) => ({ ...prev, location: locationName }));
+        } catch {
+          setStatus((s) => ({ ...s, error: 'Unable to fetch location name.' }));
         }
       },
       () => {
-        setLocationStatus('Location permission denied.');
+        setStatus((s) => ({ ...s, error: 'Permission denied for location access.' }));
       }
     );
   };
 
-  const handleRegisterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Registering:', { ...formData, location });
+    setStatus({ loading: true, error: '', success: '' });
+
+    try {
+      const res = await fetch('http://127.0.0.1:5000/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        // Save user to session and redirect to home
+        sessionStorage.setItem('username', formData.username);
+        sessionStorage.setItem('email', formData.email);
+        sessionStorage.setItem('first_name', formData.fname);
+        sessionStorage.setItem('last_name', formData.lname);
+        sessionStorage.setItem('phone', formData.phone);
+        sessionStorage.setItem('location', formData.location);
+        sessionStorage.setItem('latitude', formData.latitude);
+        sessionStorage.setItem('longitude', formData.longitude);
+
+        navigate('/'); // ✅ Redirect to home
+      } else {
+        setStatus({ loading: false, error: result.error || 'Registration failed.', success: '' });
+      }
+    } catch (err) {
+      setStatus({ loading: false, error: 'Server error during registration.', success: '' });
+    }
   };
 
   return (
-    <Form onSubmit={handleRegisterSubmit} className="styled-form">
-      <h2 className="form-title">Create Your Account</h2>
-      <p className="form-subtitle">Track alerts. Plan routes. Stay safe.</p>
+    <Form onSubmit={handleSubmit} className="p-4 rounded bg-light shadow">
+      <h3 className="mb-3 text-center">Register</h3>
+
+      {status.error && <Alert variant="danger">{status.error}</Alert>}
+      {status.success && <Alert variant="success">{status.success}</Alert>}
 
       <div className="row">
         <div className="col-md-6 mb-3">
           <Form.Control
+            type="text"
             name="fname"
             placeholder="First Name"
             value={formData.fname}
@@ -75,6 +109,7 @@ const RegisterForm = ({ switchToLogin }: Props) => {
         </div>
         <div className="col-md-6 mb-3">
           <Form.Control
+            type="text"
             name="lname"
             placeholder="Last Name"
             value={formData.lname}
@@ -88,7 +123,7 @@ const RegisterForm = ({ switchToLogin }: Props) => {
         <Form.Control
           type="email"
           name="email"
-          placeholder="name@example.com"
+          placeholder="Email Address"
           value={formData.email}
           onChange={handleInputChange}
           required
@@ -99,7 +134,7 @@ const RegisterForm = ({ switchToLogin }: Props) => {
         <Form.Control
           type="tel"
           name="phone"
-          placeholder="+1 123 456 7890"
+          placeholder="Phone Number"
           value={formData.phone}
           onChange={handleInputChange}
           required
@@ -108,46 +143,41 @@ const RegisterForm = ({ switchToLogin }: Props) => {
 
       <Form.Group className="mb-3">
         <Form.Control
-          name="location"
-          placeholder="Click to allow location access"
-          value={location}
-          onFocus={requestLocation}
-          readOnly
-        />
-        <Form.Text muted>{locationStatus}</Form.Text>
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Control
+          type="text"
           name="username"
-          placeholder="Choose a username"
+          placeholder="Username"
           value={formData.username}
           onChange={handleInputChange}
           required
         />
       </Form.Group>
 
-      <Form.Group className="mb-4">
+      <Form.Group className="mb-3">
         <Form.Control
           type="password"
           name="password"
-          placeholder="Create a password"
+          placeholder="Password"
           value={formData.password}
           onChange={handleInputChange}
           required
         />
       </Form.Group>
 
-      <Button type="submit" className="w-100 register-btn">
-        Register
-      </Button>
+      <Form.Group className="mb-3">
+        <Form.Control
+          type="text"
+          name="location"
+          placeholder="Click to autofill location"
+          onFocus={fetchLocation}
+          value={formData.location}
+          readOnly
+        />
+        <Form.Text className="text-muted">Location will auto-fill when you click.</Form.Text>
+      </Form.Group>
 
-      <div className="text-center mt-3">
-        Already have an account?{' '}
-        <span className="text-primary fw-bold" style={{ cursor: 'pointer' }} onClick={switchToLogin}>
-          Login here
-        </span>
-      </div>
+      <Button type="submit" variant="primary" className="w-100" disabled={status.loading}>
+        {status.loading ? 'Registering...' : 'Register'}
+      </Button>
     </Form>
   );
 };

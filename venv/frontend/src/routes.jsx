@@ -62,6 +62,11 @@ const routes = [
       },
       {
         exact: 'true',
+        path: '/user_alert/user_alert',
+        element: lazy(() => import('./views/user_alert/user_alert'))
+      },
+      {
+        exact: 'true',
         path: '/role/role_management',
         element: lazy(() => import('./views/role/role_management.jsx'))
       },

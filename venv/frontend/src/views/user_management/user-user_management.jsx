@@ -209,7 +209,7 @@ const UserTable = () => {
                       <td>@{user.username}</td>
                       <td>{user.email}</td>
                       <td>{user.phone_no || 'N/A'}</td>
-                      <td>{'N/A'}</td>
+                      <td>{user.location || 'N/A'}</td>
                       <td>
                         <button className="btn btn-primary" onClick={() => openEditModal(user)}>Edit</button>
                         <button className="btn btn-danger mx-2" onClick={() => openDeleteModal(user)}>Delete</button>
