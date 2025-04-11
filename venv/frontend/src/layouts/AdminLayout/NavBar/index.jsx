@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import NavLeft from './NavLeft';
 import NavRight from './NavRight';
-
+import logo from '../../../assets/images/logo_1.1.png';
 import { ConfigContext } from '../../../contexts/ConfigContext';
 import * as actionType from '../../../store/actions';
 
@@ -42,8 +42,8 @@ const NavBar = () => {
           <span />
         </Link>
         <Link to="#" className="b-brand">
-          <div className="b-bg">
-            <i className="feather icon-trending-up" />
+          <div>
+             <img src={logo} alt="Logo"  style={{ height: '60px', marginLeft: '-43px', marginRight: '-30px', marginTop: '-15px'}}/>
           </div>
           <span className="b-title">Qucik Evac</span>
         </Link>

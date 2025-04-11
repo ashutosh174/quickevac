@@ -3,30 +3,40 @@ import { Row, Col, Card, Table, Modal, Button, Form } from "react-bootstrap";
 
 const UsersWithRoles = () => {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [roles, setRoles] = useState([]);
   const [selectedRole, setSelectedRole] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
+
+  const [filters, setFilters] = useState({
+    first_name: '',
+    last_name: '',
+    role_name: ''
+  });
+
   const [newUser, setNewUser] = useState({
     first_name: '',
     last_name: '',
     username: '',
     role_id: ''
   });
-  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     fetchUsers();
-    fetchRoles(); // <-- Add this line
+    fetchRoles();
   }, []);
-  
 
   const fetchUsers = () => {
     fetch("http://127.0.0.1:5000/api/roles/users_with_roles")
       .then((res) => res.json())
-      .then((data) => setUsers(data.users || []))
+      .then((data) => {
+        setUsers(data.users || []);
+        setFilteredUsers(data.users || []);
+      })
       .catch((err) => console.error("Error fetching users:", err));
   };
 
@@ -36,7 +46,27 @@ const UsersWithRoles = () => {
       .then((data) => setRoles(data.roles || []))
       .catch((err) => console.error("Error fetching roles:", err));
   };
-  
+
+  const applyFilters = () => {
+    let result = users;
+    if (filters.first_name) {
+      result = result.filter(u => u.first_name?.toLowerCase().includes(filters.first_name.toLowerCase()));
+    }
+    if (filters.last_name) {
+      result = result.filter(u => u.last_name?.toLowerCase().includes(filters.last_name.toLowerCase()));
+    }
+    if (filters.role_name) {
+      result = result.filter(u => u.role_name?.toLowerCase().includes(filters.role_name.toLowerCase()));
+    }
+    setFilteredUsers(result);
+  };
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    const updatedFilters = { ...filters, [name]: value };
+    setFilters(updatedFilters);
+    setTimeout(() => applyFilters(), 100); // debounce-like filter
+  };
 
   const openEditModal = (user) => {
     setSelectedUser(user);
@@ -99,12 +129,43 @@ const UsersWithRoles = () => {
               <div className="d-flex justify-content-between align-items-center">
                 <Card.Title as="h5">Roles List</Card.Title>
                 <div>
-                  <Button variant="success" onClick={() => setShowAddModal(true)}>Add Role</Button>{' '}
+                  <Button style={{ background: '#1B263B' }} onClick={() => setShowAddModal(true)}>Add Role</Button>{' '}
                   <Button variant="info" onClick={() => setShowFilters(!showFilters)}>Show Filters</Button>
                 </div>
               </div>
             </Card.Header>
             <Card.Body>
+              {showFilters && (
+                <Row className="mb-3">
+                  <Col md={4}>
+                    <Form.Control
+                      type="text"
+                      name="first_name"
+                      placeholder="Filter by First Name"
+                      value={filters.first_name}
+                      onChange={handleFilterChange}
+                    />
+                  </Col>
+                  <Col md={4}>
+                    <Form.Control
+                      type="text"
+                      name="last_name"
+                      placeholder="Filter by Last Name"
+                      value={filters.last_name}
+                      onChange={handleFilterChange}
+                    />
+                  </Col>
+                  <Col md={4}>
+                    <Form.Control
+                      type="text"
+                      name="role_name"
+                      placeholder="Filter by Role"
+                      value={filters.role_name}
+                      onChange={handleFilterChange}
+                    />
+                  </Col>
+                </Row>
+              )}
               <Table responsive hover>
                 <thead>
                   <tr>
@@ -116,8 +177,8 @@ const UsersWithRoles = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {users.length > 0 ? (
-                    users.map((user) => (
+                  {filteredUsers.length > 0 ? (
+                    filteredUsers.map((user) => (
                       <tr key={user.id}>
                         <th scope="row">{user.id}</th>
                         <td>{user.first_name || '-'}</td>
@@ -141,58 +202,46 @@ const UsersWithRoles = () => {
         </Col>
       </Row>
 
-      {/* Edit Role Modal */}
+      {/* Edit Modal */}
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Role</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
-            <Form.Group controlId="roleSelect">
-              <Form.Label>Select Role</Form.Label>
-              <Form.Control
-                as="select"
-                value={selectedRole}
-                onChange={(e) => setSelectedRole(e.target.value)}
-              >
-                {roles.map((role) => (
-                  <option key={role.role_id} value={role.role_id}>
-                    {role.role_name}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-          </Form>
+          <Form.Group controlId="roleSelect">
+            <Form.Label>Select Role</Form.Label>
+            <Form.Control
+              as="select"
+              value={selectedRole}
+              onChange={(e) => setSelectedRole(e.target.value)}
+            >
+              {roles.map((role) => (
+                <option key={role.role_id} value={role.role_id}>
+                  {role.role_name}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleRoleUpdate}>
-            Save Changes
-          </Button>
+          <Button variant="secondary" onClick={() => setShowEditModal(false)}>Cancel</Button>
+          <Button variant="primary" onClick={handleRoleUpdate}>Save Changes</Button>
         </Modal.Footer>
       </Modal>
 
-      {/* Delete Confirmation Modal */}
+      {/* Delete Modal */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Confirm Deletion</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {selectedUser && (
-            <p>
-              Are you sure you want to delete <strong>{selectedUser.first_name} {selectedUser.last_name}</strong>?
-            </p>
+            <p>Are you sure you want to delete <strong>{selectedUser.first_name} {selectedUser.last_name}</strong>?</p>
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={handleDeleteUser}>
-            Delete
-          </Button>
+          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
+          <Button variant="danger" onClick={handleDeleteUser}>Delete</Button>
         </Modal.Footer>
       </Modal>
 
