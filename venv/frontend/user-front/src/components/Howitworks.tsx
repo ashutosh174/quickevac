@@ -15,21 +15,21 @@ const HowItWorks = () => {
           </div>
         </div>
 
-        <div className="row text-center step-flow">
-          <div className="col-md-4">
+        <div className="row text-center step-flow step-flow-wrapper">
+          <div className="col-md-4 sf-inner-wrap" >
             <div className="step-circle">01</div>
-            <h5 className="fw-bold mt-3">Assess Your Risks</h5>
-            <p className="text-muted">Identify potential hazards in your area and understand the risks you face.</p>
+            <h5 className="mt-3 sf-title">Assess Your Risks</h5>
+            <p className="sf-content">Identify potential hazards in your area and understand the risks you face.</p>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-4 sf-inner-wrap">
             <div className="step-circle">02</div>
-            <h5 className="fw-bold mt-3">Create Your Plan</h5>
-            <p className="text-muted">Use our resources to develop a clear and effective evacuation strategy.</p>
+            <h5 className="mt-3 sf-title">Create Your Plan</h5>
+            <p className="sf-content">Use our resources to develop a clear and effective evacuation strategy.</p>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-4 sf-inner-wrap">
             <div className="step-circle">03</div>
-            <h5 className="fw-bold mt-3">Prepare Your Kit</h5>
-            <p className="text-muted">Ensure you have all essential supplies ready for any emergency.</p>
+            <h5 className="mt-3 sf-title">Prepare Your Kit</h5>
+            <p className="sf-content">Ensure you have all essential supplies ready for any emergency.</p>
           </div>
         </div>
       </div>

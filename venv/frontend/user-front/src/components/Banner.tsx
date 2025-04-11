@@ -1,14 +1,30 @@
 // import React from 'react';
+import { Link } from 'react-scroll';
 import '../styling/MyComponent.css';
-import bannerImage from '../assets/images/banner-img.jpeg';
+// import bannerImage from '../assets/images/banner-img.jpeg';
+import { Button } from 'react-bootstrap';
 
 const Banner = () => {
+  const scrollToSection = (id: string): void => {
+    const section = document.getElementById(id);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    };
+    
   return (
-    <section className="banner d-flex align-items-center text-white" style={{ backgroundImage: `url(${bannerImage})` }}>
-      <div className="container text-center">
-        <h1 className="display-4 fw-bold">Evacuation Planning Saves Lives</h1>
-        <p className="lead">Emergencies can strike at any time. With Quick Evac, ensure you're equipped with the knowledge and resources to act swiftly and safely.</p>
-        <a href="#resources" className="btn btn-primary mt-3">Explore Resources</a>
+    <section id="home" className="banner-section d-flex justify-content-center align-items-center text-center">
+      <div className="container">
+        <h1 className="banner-title">Plan Ahead, Stay Safe</h1>
+        <p className="banner-subtitle">
+          Quick Evac empowers you with the tools and knowledge to prepare for emergencies. Your safety is our priority.
+        </p>
+        <div className="d-flex justify-content-center align-items-center gap-3 mt-4 flex-wrap">
+          <Button className="get-started-btn">
+            <Link to="resource-gallery-section" >Get Started</Link>
+          </Button>
+          <a onClick={() => scrollToSection('about-us')} className="learn-more-link">Learn More →</a>
+        </div>
       </div>
     </section>
   );

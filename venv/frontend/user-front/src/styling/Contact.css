@@ -2,14 +2,14 @@
   font-family: 'Open Sans', sans-serif;
 }
 
-.section-title {
+.emergency-section .section-title {
   color: #000080;
   font-weight: bold;
 }
 
-.section-subtitle {
-  color: #555;
-  font-size: 1rem;
+.emergency-section .section-subtitle {
+  color: #343a40;
+  font-size: 1.2rem;
   margin-bottom: 2rem;
 }
 

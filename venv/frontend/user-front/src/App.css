@@ -6,9 +6,10 @@
   background-color: #f4f7fc;
   color: #333;
 } */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Open Sans', sans-serif ;
     background-color: #f8f9fa; /* Light gray */
     color: #212529; /* Bootstrap dark text */
     margin: 0;

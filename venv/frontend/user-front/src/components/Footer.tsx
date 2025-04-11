@@ -1,29 +1,36 @@
-// import React from 'react';
-import '../styling/Footer.css';
 
+import '../styling/Footer.css';
+import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
+const scrollToSection = (id: string): void => {
+  const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 const Footer = () => {
   return (
-    <footer className="footer bg-light text-dark py-4 mt-5">
-      <div className="container">
-        <div className="row">
-          <div className="col-md-6">
-            <ul className="nav flex-column">
-              <li className="nav-item"><a className="nav-link" href="#">Home</a></li>
-              <li className="nav-item"><a className="nav-link" href="#evacuation-plans">Evacuation Plans</a></li>
-              <li className="nav-item"><a className="nav-link" href="#about">About Us</a></li>
-              <li className="nav-item"><a className="nav-link" href="#contact">Contact</a></li>
-            </ul>
-          </div>
-          <div className="col-md-6 d-flex justify-content-end align-items-center">
-            <div>
-              <a href="#" className="me-3"><i className="fab fa-facebook"></i></a>
-              <a href="#" className="me-3"><i className="fab fa-instagram"></i></a>
-              <a href="#"><i className="fab fa-linkedin"></i></a>
-            </div>
-          </div>
+    <footer className="footer bg-light-blue py-4">
+      <div className="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+        <div className="footer-links mb-3 mb-md-0">
+          <a onClick={() => scrollToSection('home')}>Home</a>
+          <a onClick={() => scrollToSection('about-us')}>About Us</a>
+          {/* <a onClick={() => scrollToSection('emergency-section')}>Contact</a> */}
         </div>
-        <div className="text-center mt-3">
-          <small>&copy; Quick Evac 2023, Your Partner in Evacuation Safety.</small>
+
+        <div className="footer-copy text-center mb-3 mb-md-0">
+          &copy; Quick Evac 2023, Your Partner in Evacuation Safety.
+        </div>
+
+        <div className="footer-social">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <FaFacebookF />
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <FaInstagram />
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <FaLinkedinIn />
+          </a>
         </div>
       </div>
     </footer>

@@ -1,109 +1,69 @@
-import React, { useState } from 'react';
-import '../styling/Loginform.css';
+// src/components/LoginForm.tsx
+import { useState } from 'react';
+import { Form, Button } from 'react-bootstrap';
 
-const LoginForm = () => {
-    // State to hold all form field values
-    const [formData, setFormData] = useState({
-      fname: '',
-      lname: '',
-      email: '',
-      phone: '',
-      username: '',
-      location: '',
-    });
-  
-    // Function to reverse geocode lat/lng to a city name using OpenStreetMap
-    const getCityFromCoordinates = async (lat: number, lon: number) => {
-      try {
-        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
-        const data = await response.json();
-        return data.address.city || data.address.town || data.address.village || 'Unknown location';
-      } catch (error) {
-        return 'Location fetch failed';
-      }
-    };
-  
-    // Handle input changes for standard fields
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-  
-    // Ask for geolocation permission and set city in the location field
-    const handleLocationFocus = () => {
-      if (!navigator.geolocation) {
-        alert('Geolocation is not supported by your browser.');
-        return;
-      }
-  
-      // Get current position from browser
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          const city = await getCityFromCoordinates(latitude, longitude);
-          setFormData((prevData) => ({ ...prevData, location: city }));
-        },
-        () => {
-          alert('Permission denied or location unavailable.');
-        }
-      );
-    };
-  
-    // Handle form submit
-    const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault();
-      console.log('Form Data:', formData);
-    };
-  
-    return (
-      <div className="login-form-container p-4 rounded shadow">
-        <h2 className="text-center mb-4">Login / Register</h2>
-        <form onSubmit={handleSubmit}>
-          {/* First & Last Name */}
-          <div className="row mb-3">
-            <div className="col">
-              <input type="text" className="form-control" name="fname" placeholder="First Name" onChange={handleChange} required />
-            </div>
-            <div className="col">
-              <input type="text" className="form-control" name="lname" placeholder="Last Name" onChange={handleChange} required />
-            </div>
-          </div>
-  
-          {/* Email */}
-          <div className="mb-3">
-            <input type="email" className="form-control" name="email" placeholder="Email" onChange={handleChange} required />
-          </div>
-  
-          {/* Phone */}
-          <div className="mb-3">
-            <input type="tel" className="form-control" name="phone" placeholder="Phone Number" onChange={handleChange} required />
-          </div>
-  
-          {/* Username */}
-          <div className="mb-3">
-            <input type="text" className="form-control" name="username" placeholder="Username" onChange={handleChange} required />
-          </div>
-  
-          {/* Location (auto fetch via focus) */}
-          <div className="mb-3">
-            <input
-              type="text"
-              className="form-control"
-              name="location"
-              placeholder="Click to detect location"
-              value={formData.location}
-              onFocus={handleLocationFocus} // fetches location when user clicks
-              readOnly
-              required
-            />
-          </div>
-  
-          {/* Submit Button */}
-          <button type="submit" className="btn btn-primary w-100">Submit</button>
-        </form>
-      </div>
-    );
+interface Props {
+  switchToRegister: () => void;
+}
+
+const LoginForm = ({ switchToRegister }: Props) => {
+  const [loginData, setLoginData] = useState({
+    usernameOrEmail: '',
+    password: '',
+  });
+
+  const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('Logging in:', loginData);
+    // TODO: Send login request to backend
   };
-  
 
+  return (
+    <Form onSubmit={handleLoginSubmit}>
+      <Form.Group className="mb-3">
+        <Form.Label>Username or Email</Form.Label>
+        <Form.Control
+          type="text"
+          name="usernameOrEmail"
+          placeholder="Enter username or email"
+          value={loginData.usernameOrEmail}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setLoginData({ ...loginData, usernameOrEmail: e.target.value })
+          }
+          required
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>Password</Form.Label>
+        <Form.Control
+          type="password"
+          name="password"
+          placeholder="Enter password"
+          value={loginData.password}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setLoginData({ ...loginData, password: e.target.value })
+          }
+          required
+        />
+      </Form.Group>
+
+      <Button type="submit" variant="primary" className="w-100 rounded-pill py-2 fs-5">
+        Login
+      </Button>
+
+      <div className="text-center mt-3">
+        Don’t have an account?{' '}
+        <span
+          className="text-primary fw-bold"
+          style={{ cursor: 'pointer' }}
+          onClick={switchToRegister}
+        >
+          Sign up here
+        </span>
+      </div>
+    </Form>
+  );
+};
 
 export default LoginForm;

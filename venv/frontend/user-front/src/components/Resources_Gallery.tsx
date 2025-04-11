@@ -24,7 +24,7 @@ const resources: Resource[] = [
 
 const ResourceGallery = () => {
   return (
-    <section className="resource-gallery-section py-5">
+    <section id="resource-gallery-section" className="resource-gallery-section py-5">
       <div className="container text-center">
         <h2 className="section-title mb-3">Essential Evacuation Resources</h2>
         <p className="section-subtitle">Browse through key tools and information to prepare for emergencies and ensure safety during evacuations.</p>

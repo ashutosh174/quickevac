@@ -4,7 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 const EmergencyContacts = () => {
   return (
-    <section className="emergency-section py-5">
+    <section id="emergency-section" className="emergency-section py-5">
       <Container>
         <h2 className="section-title text-center">Emergency Contacts</h2>
         <p className="section-subtitle text-center">Reach out to Quick Evac for assistance or guidance during emergencies. We're here to help.</p>
