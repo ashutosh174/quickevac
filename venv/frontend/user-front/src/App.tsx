@@ -1,5 +1,7 @@
-import './App.css'
+import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import Navigation from './components/Navigation';
 import Banner from './components/Banner';
 import ResourceGallery from './components/Resources_Gallery';
@@ -8,52 +10,34 @@ import ComprehensiveResources from './components/Comprehensive';
 import HowItWorks from './components/Howitworks';
 import Contact from './components/Contact';
 import Footer from "./components/Footer";
+import UserProfile from './components/profile';
+import Loginform from './components/Loginform'; // ✅ make sure this path matches your structure
 
 function App() {
   return (
-    <>
-      <div>
-      {/* Navigation Bar */}
+    <Router>
       <Navigation />
-        {/* <main>
-          <section id="home">
+
+      <Routes>
+        {/* Home page */}
+        <Route path="/" element={
+          <>
             <Banner />
-          </section>
-
-          <section id="evacuation">
+            <ResourceGallery />
+            <WhyPlan />
             <ComprehensiveResources />
-          </section>
-    <WhyPlan />
-          </section>
-        </main> 
-          <section id="whysection">
-        */}
-      </div>
+            <HowItWorks />
+            <Contact />
+            <Footer />
+          </>
+        } />
 
-      <div>
-      {/* Hero Section */}
-      <Banner />
-
-      {/* Essential Evacuation Resources */}
-      <ResourceGallery />
-
-      {/* Why Plan? Section */}
-      <WhyPlan />
-
-      {/* Comprehensive Resources Section */}
-      <ComprehensiveResources />
-
-      {/* How It works Section */}
-      <HowItWorks />
-
-      {/* Emergency Contact */}
-      <Contact />
-
-      {/* Footer */}
-      <Footer />
-      </div>
-    </>
-  )
+        {/* User Profile page */}
+        <Route path="/profile" element={<UserProfile />} />
+        <Route path="/login" element={<Loginform />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String,Float
 from config.database import Base
 import bcrypt
 
@@ -11,6 +11,9 @@ class Users(Base):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     phone_no = Column(String, nullable=False)
+    location = Column(String(255))  # optional - city/state
+    latitude = Column(Float)
+    longitude = Column(Float)          # 🌍 Add this
     is_admin = Column(Integer, default=0)  # 1 if the user is an admin, 0 otherwise
     is_manager = Column(Integer, default=0)  # 1 if the user is a manager, 0 otherwise
 

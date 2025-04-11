@@ -154,3 +154,22 @@
 .auth-form-side::-webkit-scrollbar {
   display: none;
 }
+
+/*For Dropdown*/
+.user-dropdown .dropdown-menu {
+  min-width: 150px;
+  border-radius: 10px;
+  font-size: 15px;
+  padding: 0;
+  overflow: hidden; /* 💡 Keeps hover from spilling outside */
+  border: 1px solid #ddd;
+}
+
+.user-dropdown .dropdown-item {
+  padding: 10px 20px;
+  transition: background-color 0.2s ease;
+}
+
+.user-dropdown .dropdown-item:hover {
+  background-color: none; /* a soft gray highlight */
+}

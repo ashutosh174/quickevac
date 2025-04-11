@@ -57,7 +57,7 @@ const menuItems = {
           title: 'Alert User',
           type: 'item',
           icon: 'feather icon-bell',
-          // url: '/app/dashboard/default'
+          url: '/user_alert/user_alert'
         }
       ]
     }

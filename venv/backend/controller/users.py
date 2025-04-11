@@ -11,23 +11,37 @@ users_bp = Blueprint('users', __name__)
 @cross_origin()
 def signup():
     data = request.json
-    username = data.get('username')
+    fname = data.get('fname')
+    lname = data.get('lname')
     email = data.get('email')
+    phone = data.get('phone')
+    username = data.get('username')
     password = data.get('password')
+    location = data.get('location')
+    latitude = data.get('latitude')
+    longitude = data.get('longitude')
 
-    if not username or not email or not password:
+    if not all([fname, lname, email, phone, username, password]):
         return jsonify({"error": "All fields are required"}), 400
 
-    db = next(get_db())  # Get a database session
+    db = next(get_db())
     try:
-        # Check if the email already exists
         existing_user = db.query(Users).filter_by(email=email).first()
         if existing_user:
             return jsonify({"error": "Email already exists"}), 400
 
-        # Create a new user and hash the password
-        new_user = Users(username=username, email=email)
-        new_user.set_password(password)  # Hash the password
+        new_user = Users(
+            first_name=fname,
+            last_name=lname,
+            email=email,
+            phone_no=phone,
+            username=username,
+            location=location,
+            latitude=latitude,
+            longitude=longitude
+        )
+        new_user.set_password(password)
+
         db.add(new_user)
         db.commit()
         return jsonify({"message": "User created successfully"}), 201
@@ -66,7 +80,12 @@ def login():
                 "message": "Login successful",
                 "user": {
                     "id": user.id,
-                    "username": user.username,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                    "latitude": user.latitude,
+                    "longitude": user.longitude,
+                    "location": user.location,
+                    "phone_no": user.phone_no,
                     "email": user.email,
                     "is_admin": user.is_admin,  # Include admin status in the response
                     "is_manager": user.is_manager # Include manager status in the response
