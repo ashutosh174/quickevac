@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { ConfigContext } from '../../../../contexts/ConfigContext';
 import * as actionType from '../../../../store/actions';
+import logo from '../../../../assets/images/logo_1.1.png';
 
 const NavLogo = () => {
   const configContext = useContext(ConfigContext);
@@ -18,8 +19,8 @@ const NavLogo = () => {
     <React.Fragment>
       <div className="navbar-brand header-logo">
         <Link to="#" className="b-brand">
-          <div className="b-bg">
-            <i className="feather icon-map-pin" />
+          <div>
+            <img src={logo} alt="Logo"  style={{ height: '60px', marginLeft: '-43px', marginRight: '-30px', marginTop: '-15px'}}/>
           </div>
           <span className="b-title">Quick Evac</span>
         </Link>
