@@ -79,4 +79,9 @@ def login():
     finally:
         db.close()
 
-
+#logout
+@users_bp.route('/logout', methods=['POST'])
+@cross_origin()
+def logout():
+    session.clear()
+    return jsonify({"message": "Logged out successfully"}), 200

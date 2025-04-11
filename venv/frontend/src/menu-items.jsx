@@ -32,6 +32,21 @@ const menuItems = {
       ]
     },
     {
+      id: 'role_management',
+      title: 'Access Management',
+      type: 'group',
+      icon: 'icon-user',
+      children: [
+        {
+          id: 'role_list',
+          title: 'Role Management',
+          type: 'item',
+          icon: 'feather icon-user',
+          url: '/role/role_management'
+        }
+      ]
+    },
+    {
       id: 'user_alert',
       title: 'Alert User',
       type: 'group',

@@ -25,8 +25,13 @@ const JWTLogin = () => {
       const result = await response.json();
 
       if (response.ok) {
-        console.log('Login successful:', result);
-  
+        // console.log('Login successful:', result);
+        console.log(result.user);
+        sessionStorage.setItem('username', result.user.username);
+        sessionStorage.setItem('email', result.user.email);
+        sessionStorage.setItem('user_id', result.user.id);
+        sessionStorage.setItem('is_admin', result.user.is_admin);
+        sessionStorage.setItem('is_manager', result.user.is_manager);
         // Check if the user is an admin or manager
         if (result.user.is_admin == '1') {
             navigate('/app/dashboard/default');  // Redirect to admin dashboard
