@@ -3,15 +3,15 @@
   background-color: #ffffff;
 }
 
-.section-title {
+.resource-gallery-section .section-title {
   color: #000080;
   font-weight: bold;
   font-size: 2.2rem;
 }
 
-.section-subtitle {
-  color: #444;
-  font-size: 1.05rem;
+.resource-gallery-section .section-subtitle {
+  color: #343a40;
+  font-size: 1.2rem;
   max-width: 700px;
   margin: 0 auto;
 }

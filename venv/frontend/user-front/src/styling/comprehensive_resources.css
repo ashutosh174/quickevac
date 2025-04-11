@@ -3,13 +3,24 @@
   background-color: #f9faff;
 }
 
-.section-title {
+.comprehensive-section .section-title {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 40px;
+  font-weight: 400;
   color: #000080;
-  font-weight: bold;
+  line-height: 40px;
 }
 
-.section-subtitle {
-  color: #444;
+.comprehensive-section .be-prepared-title{
+  font-family: 'Open Sans', sans-serif;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: normal;
+  color: #000080;
+}
+
+.comprehensive-section .section-subtitle {
+  color: #343a40;
   font-size: 1.05rem;
 }
 
@@ -21,8 +32,12 @@
 
 .features-list li {
   font-size: 1rem;
-  margin-bottom: 12px;
+  margin-bottom: 18px;
   display: flex;
   align-items: center;
-  color: #333;
+  color: #343a40;
+}
+
+.features-list li .text-primary{
+  color: #000080 !important;
 }

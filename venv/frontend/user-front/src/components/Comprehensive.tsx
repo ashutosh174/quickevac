@@ -4,14 +4,14 @@ import { FaClipboardCheck, FaMapMarkedAlt, FaBell } from 'react-icons/fa';
 
 const ComprehensiveResources = () => {
   return (
-    <section className="comprehensive-section py-5">
+    <section id="comprehensive-resources" className="comprehensive-section py-5">
       <div className="container">
         <div className="row align-items-center">
           <div className="col-md-6 text-center">
             <img src={resourcesImg} alt="Office" className="img-fluid rounded shadow-sm resource-img" />
           </div>
           <div className="col-md-6">
-            <p className="text-primary fw-bold small">Be Prepared</p>
+            <p className="be-prepared-title">Be Prepared</p>
             <h2 className="section-title">Comprehensive Resources</h2>
             <p className="section-subtitle">
               Quick Evac offers a suite of tools, from step-by-step guides to customizable checklists, ensuring you're ready for any emergency.

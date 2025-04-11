@@ -1,32 +1,156 @@
 .custom-navbar-wrapper {
   width: 100%;
-  padding: 20px 0;
-  display: flex;
-  justify-content: center;
-  background: transparent;
+  padding: 0;
+  margin: 0;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .custom-navbar {
-  background-color: rgba(255, 255, 255, 0.95);
-  border-radius: 999px;
-  padding: 0.75rem 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  width: 90%;
-  max-width: 1400px;
-  border: 1px solid #eee;
+  width: 100%;
+  padding: 1rem 2rem;
+  background-color: #ffffff !important;
+  border-radius: 0; /* removes the rounded corners */
+  box-shadow: none;
+  border: none;
 }
 
 .custom-navbar .nav-link {
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 18px;
   color: #000;
   margin: 0 12px;
 }
 
 .custom-navbar .nav-link:hover {
-  color: #000080;
+  color: #0056b3;
 }
 
 .logo {
-  height: 40px;
+  height: 100px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.modal-dialog {
+  max-width: 900px;
+  width: 100%;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: row;
+  border-radius: 12px;
+  overflow: hidden;
+  max-height: 90vh;
+}
+
+.auth-modal {
+  display: flex;
+  width: 100%;
+  max-height: 90vh;
+}
+
+.auth-image-side {
+  width: 50%;
+  height: auto;
+  background-color: #f2f6fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-image-side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* Right form section */
+.auth-form-side {
+  width: 50%;
+  padding: 2rem;
+  overflow-y: auto;
+  max-height: 90vh;
+  scrollbar-width: none; /* Firefox */
+}
+
+
+.auth-logo {
+  width: 100px;
+  height: auto;
+}
+
+.auth-form-side form {
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+/* Register Form */
+
+.styled-form {
+  padding: 10px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.form-title {
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin-bottom: 0.2rem;
+  text-align: center;
+}
+
+.form-subtitle {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.styled-form .form-control {
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease-in-out;
+  font-size: 0.95rem;
+}
+
+.styled-form .form-control:focus {
+  box-shadow: 0 0 0 2px #0d6efd40;
+  border-color: #0d6efd;
+}
+
+.register-btn {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  border: none;
+  color: #fff;
+  padding: 0.7rem 1rem;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+.register-btn:hover {
+  background: linear-gradient(135deg, #0056b3, #003c80);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Optional: Hide scrollbars completely */
+.auth-form-side::-webkit-scrollbar {
+  display: none;
 }

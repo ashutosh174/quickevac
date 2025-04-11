@@ -1,21 +1,77 @@
-.banner-container {
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
+.banner-section {
+  position: relative;
+  padding: 120px 20px;
+  background-color: #f4f7fe;
   font-family: 'Open Sans', sans-serif;
-  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.banner-section::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0, 0, 128, 0.3), transparent 70%);
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(50px);
+}
+
+.banner-section::after {
+  content: '';
+  position: absolute;
+  bottom: -100px;
+  right: -100px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(0, 0, 128, 0.2), transparent 70%);
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(40px);
+}
+
+.banner-section .container {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.banner-title {
+  font-size: 60px;
+  font-weight: 600;
+  color: #000080;
+}
+
+.banner-subtitle {
+  font-size: 1.2rem;
+  color: #343a40;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.get-started-btn {
   background-color: #000080;
+  border: none;
+  padding: 12px 28px;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px;
 }
 
-.banner-container h1,
-.banner-container p {
-  color: white;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+.get-started-btn:hover {
+  background-color: #000060;
 }
 
-@media (max-width: 768px) {
-  .banner-container {
-    height: auto;
-    padding: 60px 20px;
-  }
+.learn-more-link {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+  margin-left: 1rem;
+}
+
+.learn-more-link:hover {
+  text-decoration: underline;
 }

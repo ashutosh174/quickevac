@@ -15,6 +15,19 @@ function App() {
       <div>
       {/* Navigation Bar */}
       <Navigation />
+        {/* <main>
+          <section id="home">
+            <Banner />
+          </section>
+
+          <section id="evacuation">
+            <ComprehensiveResources />
+          </section>
+    <WhyPlan />
+          </section>
+        </main> 
+          <section id="whysection">
+        */}
       </div>
 
       <div>
